@@ -13,7 +13,7 @@ ETHERSCAN_API_KEY = ''
 BLOCKNATIVE_API_KEY = ''
 EMAIL_SENDER = 'eljacobsen12@gmail.com'
 EMAIL_API_KEY = ''
-
+IBB_API_KEY = ''
 
 #------------DATABASE SETUP------------
 # Production Database.

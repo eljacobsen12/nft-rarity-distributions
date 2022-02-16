@@ -5,12 +5,12 @@ import json
 import datetime
 
 
-user = 'silopete117' #getuser()
+user = '' #getuser()
 
 # Connect to MySQL DB.
 mydb = mysql.connector.connect(
   username=user,
-  password="Rk&ajXN1HlEy2hW5X!34",
+  password="",
   host=f"{user}.mysql.pythonanywhere-services.com",
   database=f"{user}$rarity_distributions"
 )
