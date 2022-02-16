@@ -7,10 +7,9 @@ import smtplib
 import logging
 import os
 import json
-from config import EMAIL, GMAIL_API_KEY
+from config import EMAIL_RECEIVER, EMAIL_SENDER, EMAIL_API_KEY
 
 
-#my_dir = os.path.dirname(__file__)
 my_dir = os.path.dirname(os.path.abspath(__file__))
 logPath = os.path.join(my_dir, 'log.log')
 
@@ -27,16 +26,13 @@ def FormatEmail(job):
 
 
 # Send email.
-def SendEmail(subject, body):
-    sender = 'eljacobsen12@gmail.com'
-    password = GMAIL_API_KEY
-
+def SendEmail(receiver, subject, body):
     try:
         msg = 'Subject: {}\n\n{}'.format(subject, body)
         smtp =  smtplib.SMTP('smtp.gmail.com', 587)
         smtp.starttls()
-        smtp.login(sender, password)
-        smtp.sendmail(sender, EMAIL, msg=msg)
+        smtp.login(EMAIL_SENDER, EMAIL_API_KEY)
+        smtp.sendmail(EMAIL_SENDER, receiver, msg=msg)
         smtp.quit()
         WriteToLog('info', "Email sent successfully.")
     except smtplib.SMTPException:
@@ -55,7 +51,7 @@ def WriteToLog(type, msg):
         logging.warning(msg)
     elif type == 'error':
         logging.error(msg)
-        SendEmail('silopete117@protonmail.com', 'Error Occurred', "Error Occurred: {}".format(msg))
+        SendEmail(EMAIL_RECEIVER, 'Error Occurred', "Error Occurred: {}".format(msg))
     else:
         logging.log(msg)
 

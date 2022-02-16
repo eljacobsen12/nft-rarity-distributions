@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>NFT Rarity Distributions</title>
+</head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+    /* Add a black background color to the top navigation */
+    .topnav {
+        background-color: #333;
+        overflow: hidden;
+    }
+
+        /* Style the links inside the navigation bar */
+        .topnav a {
+            float: right;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+            /* Change the color of links on hover */
+            .topnav a:hover {
+                background-color: #AAB8C2;
+                color: black;
+            }
+
+            /* Add a color to the active/current link */
+            .topnav a.active {
+                background-color: #657786;
+                color: white;
+            }
+
+    body {
+        font-family: Verdana, sans-serif;
+        margin: 0;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    .row > .column {
+        padding: 0 8px;
+    }
+
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .column {
+        float: left;
+        width: 25%;
+    }
+
+
+    /* The Modal (background) */
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 100px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: black;
+    }
+
+
+    /* Modal Content */
+
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        width: 90%;
+        max-width: 1200px;
+    }
+
+
+    /* The Close Button */
+
+    .close {
+        color: white;
+        position: absolute;
+        top: 10px;
+        right: 25px;
+        font-size: 35px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #999;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+    .mySlides {
+        display: none;
+    }
+
+    .cursor {
+        cursor: pointer;
+    }
+
+
+    /* Next & previous buttons */
+
+    .prev,
+    .next {
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        width: auto;
+        padding: 16px;
+        margin-top: -50px;
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        font-size: 20px;
+        transition: 0.6s ease;
+        border-radius: 0 3px 3px 0;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+
+    /* Position the "next button" to the right */
+
+    .next {
+        right: 0;
+        border-radius: 3px 0 0 3px;
+    }
+
+
+        /* On hover, add a black background color with a little bit see-through */
+
+        .prev:hover,
+        .next:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+    input:invalid {
+        box-shadow: 0 0 5px 1px #1f76b4;
+    }
+
+    input:valid {
+        box-shadow: 0 0 5px 1px green;
+    }
+
+
+    /* Number text (1/3 etc) */
+
+    .numbertext {
+        color: #000000;
+        font-size: 16px;
+        padding: 8px 12px;
+        position: absolute;
+        top: 0;
+    }
+
+    img {
+        margin-bottom: -4px;
+    }
+
+    .caption-container {
+        text-align: center;
+        background-color: black;
+        padding: 2px 16px;
+        color: white;
+    }
+
+    .demo {
+        opacity: 0.6;
+    }
+
+        .active,
+        .demo:hover {
+            opacity: 1;
+        }
+
+    img.hover-shadow {
+        transition: 0.3s;
+    }
+
+    .hover-shadow:hover {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .top {
+        width: 90%;
+        margin: auto;
+        overflow: hidden;
+        text-align: center;
+        min-height: 20%;
+        padding-top: 2%;
+    }
+
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        vertical-align: middle;
+    }
+
+    h1 {
+        font-size: 3em;
+        font-weight: bold;
+    }
+
+    .logo1 {
+        float: left;
+        display: inline;
+    }
+
+    .logo2 {
+        float: right;
+        display: inline;
+    }
+
+    .title {
+        display: inline;
+    }
+
+    div.container {
+        display: inline-block;
+        padding: 2px 24px;
+    }
+
+    div.container-title {
+        display: inline-block;
+        padding: 2px 24;
+        white-space: nowrap;
+    }
+
+    .text-center {
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .numbering {
+        color: #1f76b4;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .numbering_dark {
+        color: #000000;
+        text-align: center;
+        font-weight: bold;
+        font-size: 20px;
+    }
+</style>
+
+<body style="background-color:#EDF1FF;">
+    <div class="topnav">
+        <a href="#about" hidden=true>About</a>
+        <a href="#contact" hidden=true>Contact</a>
+        <a class="active" href="https://silopete117.pythonanywhere.com/nft-rarity-distributions/new">New</a>
+        <a href="https://silopete117.pythonanywhere.com/nft-rarity-distributions/irregular">Irregular</a>
+        <a href="https://silopete117.pythonanywhere.com/nft-rarity-distributions/all">All</a>
+    </div>
+    <div class="top">
+        <header>
+            <div class="container">
+                <a href="https://www.convexlabs.xyz/" target="_blank" rel="noopener noreferrer"><img class="logo1" src="https://i.ibb.co/tHj1VSW/Convex-Labs-logo-400x400.jpg" alt="ConvexLabs_logo" height="50%" width="50%"></a>
+            </div>
+            <div class="container-title">
+                <h1 class="title" style="text-align:center;">NFT Rarity Distributions</h1>
+                <h3 style="text-align:center; font-size:24px;">
+                    By<span id="creator"></span>
+                    <a href="https://twitter.com/silopete117" target="_blank" rel="noopener noreferrer" style="color:#1f76b4; font-size:24px;">@Silopete117</a>
+                </h3>
+                <h5 style="text-align:center; font-style:italic; font-size:14px;">Powered by ConvexLabs & HonestNFT<span id="bio"></span></h5>
+            </div>
+            <div class="container">
+                <a href="https://www.honestnft.xyz/" target="_blank" rel="noopener noreferrer"><img class="logo2" src="https://i.ibb.co/6rKDvyV/Honest-NFT-logo.jpg" alt="HonestNFT_logo" height="50%" width="50%"></a>
+            </div>
+        </header>
+    </div>
+    <div class="row" style="text-align:center">
+        <div class="search-container">
+            <form name="myform" action="search_address()">
+                <label for="address" style="font-size:24px;font-weight: bold;">Contract Address:</label>
+                <input type="text" placeholder="Search.." id="search" name="search" value="" pattern="^0x[a-fA-F0-9]{40}$" style="font-size:24px; width:600px; height:35px;" required />
+                <input type="button" id="button" name="button" value="Search" onClick="search_address()" style="font-size:24px;" />
+            </form>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row" style="background-color:white;">
+        {# Loop through Collection object w/ Jinja. #}
+        {% if collections %}
+        {% for collection in collections: %}
+        <div class="column"> <img src={{ collection.rarity_image_url }} alt={{ collection.name }} style="width:100%" onclick="openModal();currentSlide({{loop.index}})" class="hover-shadow cursor"> </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <div id="myModal" class="modal">
+        <span class="close cursor" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            {# Loop through Collection object w/ Jinja. #}
+            {% if collections %}
+            {% for collection in collections: %}
+            <div class="mySlides">
+                <div class="numbertext">{{ loop.index }} / {{ loop.length }}</div> <a href="https://silopete117.pythonanywhere.com/nft-rarity-distributions/search/{{ collection.address }}"><img src={{ collection.rarity_image_url }} alt={{ collection.name }} style="width:100%"></a>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="caption-container">
+                <p id="caption"></p>
+            </div>
+            {# Loop through Collection object w/ Jinja. #}
+            {% if collections %}
+            {% for collection in collections: %}
+            <div class="column"> <img class="demo cursor" src={{ collection.rarity_image_url }} alt={{ collection.name }} style="width:100%" onclick="currentSlide({{loop.index}})"> </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    <script>// Submit search on Enter (key 13)
+    document.getElementById('search').onkeypress=function(e){
+        if(e.keyCode==13){
+            event.preventDefault();
+            document.getElementById('button').click();
+        }
+    };
+
+	function search_address() {
+		address = document.getElementById('search').value;
+		window.location.replace("https://silopete117.pythonanywhere.com/nft-rarity-distributions/search/" + address);
+	}
+
+	function openModal() {
+		document.getElementById("myModal").style.display = "block";
+	}
+
+	function closeModal() {
+		document.getElementById("myModal").style.display = "none";
+	}
+
+	var slideIndex = 1;
+	showSlides(slideIndex);
+
+	function plusSlides(n) {
+		showSlides(slideIndex += n);
+	}
+
+	function currentSlide(n) {
+		showSlides(slideIndex = n);
+	}
+
+	function showSlides(n) {
+		var i;
+		var slides = document.getElementsByClassName("mySlides");
+		var dots = document.getElementsByClassName("demo");
+		var captionText = document.getElementById("caption");
+		if(n > slides.length) {
+			slideIndex = 1
+		}
+		if(n < 1) {
+			slideIndex = slides.length
+		}
+		for(i = 0; i < slides.length; i++) {
+			slides[i].style.display = "none";
+		}
+		for(i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" active", "");
+		}
+		slides[slideIndex - 1].style.display = "block";
+		dots[slideIndex - 1].className += " active";
+		captionText.innerHTML = dots[slideIndex - 1].alt;
+	}</script>
+</body>
+
+</html>
